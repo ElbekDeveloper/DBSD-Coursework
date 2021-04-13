@@ -1,15 +1,13 @@
+using ApplicationCore.Interfaces.RepositoryInterfaces;
+using ApplicationCore.Interfaces.ServiceInterfaces;
+using ApplicationCore.Resources;
+using ApplicationCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SqlInfrastructure.Repositories;
 
 namespace WebApi
 {
@@ -27,6 +25,9 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddAutoMapper(typeof(MappingProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
