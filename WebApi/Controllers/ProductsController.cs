@@ -28,5 +28,12 @@ namespace WebApi.Controllers
         {
             return Ok(await _productService.GetAllProductsAsync(cancellationToken));
         }
+        [HttpGet("id")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Description = "All Products", Type = typeof(List<GetProductResource>))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult<GetProductResource>> GetProductById([FromRoute]int id, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _productService.GetProductByIdAsync(id, cancellationToken));
+        }
     }
 }

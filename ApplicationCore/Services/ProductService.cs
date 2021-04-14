@@ -31,5 +31,15 @@ namespace ApplicationCore.Services
             return productResources;
 
         }
+
+        public async Task<GetProductResource> GetProductByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var product = await _productRepository.GetByIdAsync(id, cancellationToken);
+            var productResource = _mapper.Map<GetProductResource>(product);
+           
+            return productResource;
+        }
+
+  
     }
 }
