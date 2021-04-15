@@ -44,5 +44,14 @@ namespace WebApi.Controllers
         {
             return Ok(await _productService.CreateProductAsync(productResource, cancellationToken));
         }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Product Deleted", Type = typeof(int))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int id, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _productService.DeleteProductAsync(id, cancellationToken));
+        }
     }
 }

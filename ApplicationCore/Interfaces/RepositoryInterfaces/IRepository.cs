@@ -11,6 +11,6 @@ namespace ApplicationCore.Interfaces.RepositoryInterfaces
         Task<T> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<int> CreateAsync(T entity, CancellationToken cancellationToken = default);
         Task<int> UpdateAsync(T entity, CancellationToken cancellationToken = default);
-        Task<int> DeleteAsync(T entity, CancellationToken cancellationToken = default);
+        Task<int> DeleteAsync(int id, CancellationToken cancellationToken = default);
     }
 }

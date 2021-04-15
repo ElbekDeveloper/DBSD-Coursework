@@ -44,9 +44,30 @@ namespace SqlInfrastructure.Repositories
             }
         }
 
-        public Task<int> DeleteAsync(Product entity, CancellationToken cancellationToken = default)
+        public async Task<int> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string procedure = "spProduct_Delete";
+                var parameters = new DynamicParameters();
+                parameters.Add("ProductId", id, DbType.Int32);
+
+                using (var connection = CreateConnection())
+                {
+                    var result = await connection.ExecuteAsync
+                        (
+                        sql: procedure,
+                        param: parameters,
+                        commandType: CommandType.StoredProcedure
+                        );
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message, ex);
+            }
         }
 
         public async Task<List<Product>> GetAllAsync(CancellationToken cancellationToken = default)
