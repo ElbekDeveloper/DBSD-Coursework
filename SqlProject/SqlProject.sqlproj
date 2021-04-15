@@ -82,6 +82,9 @@
     <Build Include="dbo\Tables\Invoice.sql" />
     <Build Include="dbo\Tables\CounterAgent.sql" />
     <Build Include="dbo\Tables\Warehouse.sql" />
+    <Build Include="dbo\Stored Procedures\spStaffMember_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\spCounterAgent_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\spWarehouse_GetAll.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\SqlProject.publish.xml" />
