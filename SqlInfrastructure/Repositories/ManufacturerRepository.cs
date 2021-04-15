@@ -22,7 +22,7 @@ namespace SqlInfrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteAsync(Manufacturer entity, CancellationToken cancellationToken = default)
+        public Task<int> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

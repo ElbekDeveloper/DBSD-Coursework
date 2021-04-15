@@ -28,6 +28,11 @@ namespace ApplicationCore.Services
             return await _productRepository.CreateAsync(entity, cancellationToken);
         }
 
+        public async Task<int> DeleteProductAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _productRepository.DeleteAsync(id, cancellationToken);
+        }
+
         public async Task<List<GetProductResource>> GetAllProductsAsync(CancellationToken cancellationToken = default)
         {
 
