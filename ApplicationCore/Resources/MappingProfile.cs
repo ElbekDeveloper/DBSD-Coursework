@@ -10,6 +10,7 @@ namespace ApplicationCore.Resources
             CreateMap<Product, GetProductResource>()
                         .ForMember(gproduct => gproduct.MeasurementUnit, opt => opt.MapFrom(p => p.MeasurementUnit.Name));
             CreateMap<Manufacturer, ManufacturerResource>().ReverseMap();
+            CreateMap<AddProductResource, Product>();
         }
     }
 }
