@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
