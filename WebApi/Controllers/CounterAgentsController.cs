@@ -12,24 +12,24 @@ using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]/")]
-    [ApiController]
-    public class CounterAgentsController : ControllerBase
+[Route("api/[controller]/")]
+[ApiController]
+public class CounterAgentsController : ControllerBase
+{
+    private readonly ICounterAgentService _counterAgentService;
+
+    public CounterAgentsController(ICounterAgentService counterAgentService)
     {
-        private readonly ICounterAgentService _counterAgentService;
-
-        public CounterAgentsController(ICounterAgentService counterAgentService)
-        {
-            _counterAgentService = counterAgentService;
-        }
-
-
-        [HttpGet]
-        [SwaggerResponse((int)HttpStatusCode.OK, Description = "All Counter Agents", Type = typeof(List<CounterAgentResource>))]
-        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
-        public async Task<ActionResult<IEnumerable<CounterAgentResource>>> GetManufacturers(CancellationToken cancellationToken = default)
-        {
-            return Ok(await _counterAgentService.GetAllCounterAgentsAsync(cancellationToken));
-        }
+        _counterAgentService = counterAgentService;
     }
+
+
+    [HttpGet]
+    [SwaggerResponse((int)HttpStatusCode.OK, Description = "All Counter Agents", Type = typeof(List<CounterAgentResource>))]
+    [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+    public async Task<ActionResult<IEnumerable<CounterAgentResource>>> GetManufacturers(CancellationToken cancellationToken = default)
+    {
+        return Ok(await _counterAgentService.GetAllCounterAgentsAsync(cancellationToken));
+    }
+}
 }
