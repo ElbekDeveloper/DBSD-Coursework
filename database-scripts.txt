@@ -6,16 +6,16 @@ use PharmacyDb;
 go
 --	CREATE TABLES
 create table Manufacturer (
-Id int NOT NULL Primary Key,
+Id int NOT NULL Primary Key Identity(1,1),
 Name varchar(255),
 Address varchar(255)
 );
 create table MeasurementUnit(
-Id int NOT NULL Primary Key,
+Id int NOT NULL Primary Key Identity(1,1),
 Name varchar(255)
 );
 create table Product(
-Id int NOT NULL Primary Key,
+Id int NOT NULL Primary Key Identity(1,1),
 Name varchar(255) NOT NULL,
 Description varchar(max),
 Price decimal NOT NULL,
@@ -30,55 +30,30 @@ CONSTRAINT FK_MeasurementUnitId_MeasurementUnit FOREIGN KEY (MeasurementUnitId)
         REFERENCES MeasurementUnit (Id)
 );
 create table CounterAgent(
-Id int not null primary key,
+Id int not null primary key Identity(1,1),
 FirstName varchar(255) not null,
 LastName varchar(255),
 Address varchar(255),
 Email varchar(255),
-IsCustomer bit not null
+IsCustomer bit not null,
+PhoneNumber varchar(55)
 );
-create table CounterAgentPhone(
-CounterAgentId int,
-Phone varchar(255)
-constraint 
-	PK_AgentPhoneKey primary key (CounterAgentId, Phone),
-constraint 
-	FK_CounterAgentId_CounterAgent foreign key (CounterAgentId)
-	references CounterAgent (Id)
-)
+
 create table StaffMember(
-Id int not null primary key,
+Id int not null primary key Identity(1,1),
 FirstName varchar(255) not null,
 LastName varchar(255),
 Address varchar(255),
 Email varchar(255),
-RegisterDate date
+RegisterDate date,
+PhoneNumber varchar(55)
 );
-create table StaffMemberPhone(
-StaffMemberId int,
-Phone varchar(255)
-constraint 
-	PK_StaffPhoneKey primary key (StaffMemberId, Phone),
-constraint 
-	FK_StaffMemberId_StaffMember foreign key (StaffMemberId)
-	references StaffMember (Id)
-)
-create table Role (
-Id int not null primary key,
-Name varchar(255)
+
+create table Warehouse(
+Id int not null primary key Identity(1,1),
+Address varchar(255),
 );
-create table StaffMemberRole(
-StaffMemberId int not null,
-RoleId int not null,
-constraint 
-	PK_MemberRoleKey primary key (StaffMemberId,RoleId),
-constraint
-	FK_StaffMemberId_ForRole foreign key (StaffMemberId)
-	references StaffMember (Id),
-constraint
-	FK_RoleId_Role foreign key (RoleId)
-	references Role (Id)
-)
+
 create table Invoice(
 Id int not null primary key, 
 CreatedDate date, 
@@ -86,12 +61,16 @@ ConfirmationStatus bit,
 TotalCost decimal, 
 CreatedStaffId int, 
 AgentId int, 
+WarehouseId int
 constraint
 	FK_CreatedStaffMemberId foreign key (CreatedStaffId)
 	references StaffMember (Id),
 constraint
 	FK_AgentId foreign key (AgentId)
-	references CounterAgent (Id)
+	references CounterAgent (Id), 
+constraint
+	FK_WarehouseId foreign key (WarehouseId)
+	references Warehouse (Id)
 );
 create table InvoiceProduct(
 ProductId int,
@@ -148,112 +127,48 @@ insert into Product (Name, Description, Price, ManufacturedDate, ExpirationDate,
 insert into Product (Name, Description, Price, ManufacturedDate, ExpirationDate, ManufacturerId, MeasurementUnitId, QuantityAtWarehouse) values ('Nifedipine', 'Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.', 8.45, '1/7/2020', '10/20/2023', 5, 1, 1383);
 go
 --insert into counter agent table 
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (1, 'Boycie', 'Ferney', '79006 Cody Court', 'bferney0@usa.gov', 0);
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (2, 'Dedra', 'Kettel', '36 Corben Junction', 'dkettel1@about.me', 0);
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (3, 'Krystle', 'Jovic', '94660 Prairieview Terrace', 'kjovic2@forbes.com', 0);
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (4, 'Kittie', 'Dawdary', '3 Pine View Park', 'kdawdary3@bloomberg.com', 1);
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (5, 'See', 'Morstatt', '62 Namekagon Road', 'smorstatt4@webnode.com', 1);
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (6, 'Sophronia', 'Vivash', '4379 Ruskin Plaza', 'svivash5@addthis.com', 1);
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (7, 'Abagael', 'MacManus', '537 Claremont Terrace', 'amacmanus6@imgur.com', 1);
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (8, 'Revkah', 'Ratlee', '36 Barby Avenue', 'rratlee7@rediff.com', 0);
-insert into CounterAgent (Id, FirstName, LastName, Address, Email, IsCustomer) values (9, 'Gerome', 'Sheppey', '4123 Huxley Street', 'gsheppey8@ucla.edu', 1);
-go
---insert into counter agent phone table
-insert into CounterAgentPhone (CounterAgentId, Phone) values (1, '(761) 6732912');
-insert into CounterAgentPhone (CounterAgentId, Phone) values (2, '(388) 5045827');
-insert into CounterAgentPhone (CounterAgentId, Phone) values (3, '(148) 5959422');
-insert into CounterAgentPhone (CounterAgentId, Phone) values (4, '(134) 6044999');
-insert into CounterAgentPhone (CounterAgentId, Phone) values (5, '(438) 1054076');
-insert into CounterAgentPhone (CounterAgentId, Phone) values (6, '(810) 4974958');
-insert into CounterAgentPhone (CounterAgentId, Phone) values (7, '(339) 9834129');
-insert into CounterAgentPhone (CounterAgentId, Phone) values (8, '(807) 6059580');
-insert into CounterAgentPhone (CounterAgentId, Phone) values (9, '(263) 8866739');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Boycie', 'Ferney', '79006 Cody Court', 'bferney0@usa.gov', 0, '933456789');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Dedra', 'Kettel', '36 Corben Junction', 'dkettel1@about.me', 0, '940678543');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Krystle', 'Jovic', '94660 Prairieview Terrace', 'kjovic2@forbes.com', 0, '7112341232');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Kittie', 'Dawdary', '3 Pine View Park', 'kdawdary3@bloomberg.com', 1, '7112341232');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('See', 'Morstatt', '62 Namekagon Road', 'smorstatt4@webnode.com', 1, '7112341232');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Abagael', 'MacManus', '537 Claremont Terrace', 'amacmanus6@imgur.com', 1, '918765643');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Sophronia', 'Vivash', '4379 Ruskin Plaza', 'svivash5@addthis.com', 1, '918765643');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Gerome', 'Sheppey', '4123 Huxley Street', 'gsheppey8@ucla.edu', 1, '918765643');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Revkah', 'Ratlee', '36 Barby Avenue', 'rratlee7@rediff.com', 0, '918765643');
+insert into CounterAgent (FirstName, LastName, Address, Email, IsCustomer, PhoneNumber) values ('Revkssah', 'Ratslee', '36 Barbys Avenue', 'rratlees7@rediff.com', 0, '908765643');
+
 go
 --insert into staff member table
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (1, 'Chrissy', 'Fouldes', '76 Fulton Alley', 'cfouldes0@forbes.com', '5/21/2012');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (2, 'Marigold', 'Launder', '606 Harbort Pass', 'mlaunder1@nature.com', '8/1/2012');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (3, 'Yetty', 'Littlepage', '97 Ridge Oak Trail', 'ylittlepage2@craigslist.org', '8/15/2014');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (4, 'Leena', 'Kristoffersen', '764 Sachtjen Crossing', 'lkristoffersen3@123-reg.co.uk', '10/21/2018');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (5, 'Marietta', 'Bemand', '6873 Everett Trail', 'mbemand4@flickr.com', '9/1/2013');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (6, 'Park', 'Sambells', '827 Dottie Point', 'psambells5@domainmarket.com', '8/22/2011');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (7, 'Reina', 'Petri', '3 Huxley Alley', 'rpetri6@ifeng.com', '5/4/2014');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (8, 'Darren', 'Mines', '422 Comanche Trail', 'dmines7@creativecommons.org', '10/6/2012');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (9, 'Killy', 'Jerschke', '77359 Fallview Lane', 'kjerschke8@uiuc.edu', '3/29/2015');
-insert into StaffMember (Id, FirstName, LastName, Address, Email, RegisterDate) values (10, 'Tabbie', 'Merrgan', '480 Grasskamp Point', 'tmerrgan9@mapy.cz', '3/17/2013');
-go
---insert into staff member phone table 
-insert into StaffMemberPhone (StaffMemberId, Phone) values (1, '(338) 4919969');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (2, '(792) 8988725');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (3, '(319) 9582819');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (4, '(898) 5958802');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (5, '(958) 1204591');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (6, '(253) 9748397');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (7, '(305) 4682008');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (8, '(869) 5300403');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (9, '(796) 3343891');
-insert into StaffMemberPhone (StaffMemberId, Phone) values (10, '(760) 1240281');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Leena', 'Kristoffersen', '764 Sachtjen Crossing', 'lkristoffersen3@123-reg.co.uk', '10/21/2018', '931245367');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Yetty', 'Littlepage', '97 Ridge Oak Trail', 'ylittlepage2@craigslist.org', '8/15/2014', '931245337');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Darren', 'Mines', '422 Comanche Trail', 'dmines7@creativecommons.org', '10/6/2012', '931242367');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Park', 'Sambells', '827 Dottie Point', 'psambells5@domainmarket.com', '8/22/2011', '931245367');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Killy', 'Jerschke', '77359 Fallview Lane', 'kjerschke8@uiuc.edu', '3/29/2015', '931245307');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Marigold', 'Launder', '606 Harbort Pass', 'mlaunder1@nature.com', '8/1/2012', '931240367');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Marietta', 'Bemand', '6873 Everett Trail', 'mbemand4@flickr.com', '9/1/2013', '931245367');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Chrissy', 'Fouldes', '76 Fulton Alley', 'cfouldes0@forbes.com', '5/21/2012', '931245377');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Tabbie', 'Merrgan', '480 Grasskamp Point', 'tmerrgan9@mapy.cz', '3/17/2013', '931215367');
+insert into StaffMember (FirstName, LastName, Address, Email, RegisterDate, PhoneNumber) values ( 'Reina', 'Petri', '3 Huxley Alley', 'rpetri6@ifeng.com', '5/4/2014', '931245067');
 
 go
---insert into role table 
-insert into Role (Id, Name) values (1, 'Budget/Accounting Analyst I');
-insert into Role (Id, Name) values (2, 'Assistant Manager');
-insert into Role (Id, Name) values (3, 'Project Manager');
-insert into Role (Id, Name) values (4, 'Product Engineer');
-insert into Role (Id, Name) values (5, 'Developer II');
-insert into Role (Id, Name) values (6, 'Compensation Analyst');
-insert into Role (Id, Name) values (7, 'Social Worker');
-insert into Role (Id, Name) values (8, 'VP Accounting');
-insert into Role (Id, Name) values (9, 'Senior Editor');
-insert into Role (Id, Name) values (10, 'Web Designer III');
-go
---insert into staff member's role table
-insert into StaffMemberRole (StaffMemberId, RoleId) values (1, 1);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (1, 3);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (3, 3);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (4, 4);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (5, 9);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (6, 1);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (7, 1);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (8, 6);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (9, 9);
-insert into StaffMemberRole (StaffMemberId, RoleId) values (10, 10);
-go
---insert into invoice table
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (1, '9/8/2020', 1, 1749.66, 2.87, 6.01);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (2, '1/31/2020', 0, 1251.58, 3.31, 6.15);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (3, '1/4/2020', 0, 525.5, 4.34, 9.69);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (4, '3/3/2020', 1, 645.7, 2.32, 8.74);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (5, '2/18/2020', 0, 1929.27, 1.13, 8.59);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (6, '9/29/2020', 1, 1920.03, 4.47, 5.31);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (7, '6/15/2020', 1, 1003.88, 3.52, 9.49);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (8, '9/9/2020', 0, 1060.93, 3.94, 9.41);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (9, '8/6/2020', 1, 524.94, 1.99, 7.54);
-insert into Invoice (Id, CreatedDate, ConfirmationStatus, TotalCost, CreatedStaffId, AgentId) values (10, '6/23/2020', 1, 245.26, 1.29, 5.59);
-go
---insert into invoice product table 
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (6, 4, 7, 42.78);
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (8, 8, 47, 33.27);
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (2, 4, 33, 129.78);
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (5, 2, 32, 136.51);
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (1, 7, 91, 185.48);
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (8, 2, 50, 155.34);
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (9, 2, 76, 33.82);
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (4, 10, 17, 141.77);
-insert into InvoiceProduct (ProductId, InvoiceId, SoldPrice, SoldQuantity) values (7, 4, 54, 123.82);
-go
 
--- SHOW TABLES
-select * from Manufacturer;
-select * from MeasurementUnit;
-select * from Product;
-select FirstName, Phone from CounterAgent join CounterAgentPhone on CounterAgent.Id = CounterAgentPhone.CounterAgentId;
-select FirstName, Phone from StaffMember join StaffMemberPhone on StaffMember.Id = StaffMemberPhone.StaffMemberId;
-select * from Role join StaffMemberRole on StaffMemberRole.RoleId = Role.Id;
-select Invoice.Id, TotalCost, CounterAgent.FirstName, StaffMember.FirstName from Invoice 
-	join CounterAgent on AgentId = CounterAgent.Id
-	join StaffMember on CreatedStaffId = StaffMember.Id;
-
-
+--insert sample data to Warehouse table
+insert into dbo.Warehouse (address) values ('35 Farwell Street');
+insert into dbo.Warehouse (address) values ('81648 Sauthoff Drive');
+insert into dbo.Warehouse (address) values ('3 7th Hill');
+insert into dbo.Warehouse (address) values ('3967 Sachs Court');
+insert into dbo.Warehouse (address) values ('1701 Hagan Court');
+insert into dbo.Warehouse (address) values ('1547 Brentwood Road');
+insert into dbo.Warehouse (address) values ('8 Melvin Avenue');
+insert into dbo.Warehouse (address) values ('443 Ohio Plaza');
+insert into dbo.Warehouse (address) values ('63 Beilfuss Park');
+insert into dbo.Warehouse (address) values ('0203 Hansons Way');
+insert into dbo.Warehouse (address) values ('47444 Elgar Pass');
+insert into dbo.Warehouse (address) values ('4 Harper Road');
+insert into dbo.Warehouse (address) values ('11 Northwestern Way');
+insert into dbo.Warehouse (address) values ('32 Ronald Regan Alley');
+insert into dbo.Warehouse (address) values ('5 Oneill Way');
 
 go
 --  DELETE TABLES
@@ -268,6 +183,7 @@ drop table CounterAgent;
 drop table Product;
 drop table MeasurementUnit;
 drop table Manufacturer;
+drop table Warehouse;
 
 
 go
