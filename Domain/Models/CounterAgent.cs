@@ -1,35 +1,32 @@
-﻿namespace Domain.Models
-{
-public class CounterAgent:BaseEntity
-{
+﻿namespace Domain.Models {
+  public class CounterAgent : BaseEntity {
     public int CounterAgentId {
-        get;
-        set;
+      get;
+      set;
     }
     public string FirstName {
-        get;
-        set;
+      get;
+      set;
     }
     public string LastName {
-        get;
-        set;
+      get;
+      set;
     }
     public string Address {
-        get;
-        set;
+      get;
+      set;
     }
     public string Email {
-        get;
-        set;
+      get;
+      set;
     }
     public bool IsCustomer {
-        get;
-        set;
+      get;
+      set;
     }
     public string PhoneNumber {
-        get;
-        set;
+      get;
+      set;
     }
-
-}
+  }
 }

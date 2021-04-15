@@ -1,34 +1,32 @@
-﻿namespace ApplicationCore.Resources
-{
-public class StaffMemberResource
-{
+﻿namespace ApplicationCore.Resources {
+  public class StaffMemberResource {
     public int StaffMemberId {
-        get;
-        set;
+      get;
+      set;
     }
     public string FirstName {
-        get;
-        set;
+      get;
+      set;
     }
     public string LastName {
-        get;
-        set;
+      get;
+      set;
     }
     public string Address {
-        get;
-        set;
+      get;
+      set;
     }
     public string Email {
-        get;
-        set;
+      get;
+      set;
     }
     public DateTime RegisterDate {
-        get;
-        set;
+      get;
+      set;
     }
     public string PhoneNumber {
-        get;
-        set;
+      get;
+      set;
     }
-}
+  }
 }

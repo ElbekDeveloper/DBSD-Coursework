@@ -1,14 +1,12 @@
-﻿namespace ApplicationCore.Resources
-{
-public class WarehouseResource
-{
+﻿namespace ApplicationCore.Resources {
+  public class WarehouseResource {
     public int WarehouseId {
-        get;
-        set;
+      get;
+      set;
     }
     public string Address {
-        get;
-        set;
+      get;
+      set;
     }
-}
+  }
 }

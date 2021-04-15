@@ -1,14 +1,12 @@
-﻿namespace Domain.Models
-{
-public class Warehouse : BaseEntity
-{
+﻿namespace Domain.Models {
+  public class Warehouse : BaseEntity {
     public int WarehouseId {
-        get;
-        set;
+      get;
+      set;
     }
     public string Adress {
-        get;
-        set;
+      get;
+      set;
     }
-}
+  }
 }

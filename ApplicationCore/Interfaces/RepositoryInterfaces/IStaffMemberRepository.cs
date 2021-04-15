@@ -1,8 +1,5 @@
 ﻿using Domain.Models;
 
-namespace ApplicationCore.Interfaces.RepositoryInterfaces
-{
-public interface IStaffMemberRepository:IRepository<StaffMember>
-{
-}
+namespace ApplicationCore.Interfaces.RepositoryInterfaces {
+  public interface IStaffMemberRepository : IRepository<StaffMember> {}
 }
