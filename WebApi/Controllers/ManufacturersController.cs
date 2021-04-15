@@ -10,26 +10,25 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebApi.Controllers
-{
+namespace WebApi.Controllers {
 
-[Route("api/[controller]/")]
-[ApiController]
-public class ManufacturersController : ControllerBase
-{
+  [Route("api/[controller]/")]
+  [ApiController]
+  public class ManufacturersController : ControllerBase {
     private readonly IManufacturerService _manufacturerService;
 
-    public ManufacturersController(IManufacturerService manufacturerService)
-    {
-        _manufacturerService = manufacturerService;
+    public ManufacturersController(IManufacturerService manufacturerService) {
+      _manufacturerService = manufacturerService;
     }
 
     [HttpGet]
-    [SwaggerResponse((int)HttpStatusCode.OK, Description = "All Manufacturers", Type = typeof(List<ManufacturerResource>))]
-    [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
-    public async Task<ActionResult<IEnumerable<ManufacturerResource>>> GetManufacturers(CancellationToken cancellationToken = default)
-    {
-        return Ok(await _manufacturerService.GetAllManufacturersAsync(cancellationToken));
+    [SwaggerResponse((int) HttpStatusCode.OK, Description = "All Manufacturers",
+                     Type = typeof(List<ManufacturerResource>))]
+    [SwaggerResponse((int) HttpStatusCode.InternalServerError)]
+    public async Task<ActionResult<IEnumerable<ManufacturerResource>>>
+    GetManufacturers(CancellationToken cancellationToken = default) {
+      return Ok(await _manufacturerService.GetAllManufacturersAsync(
+          cancellationToken));
     }
-}
+  }
 }
