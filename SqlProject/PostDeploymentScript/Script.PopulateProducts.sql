@@ -1,23 +1,37 @@
-﻿
-delete from dbo.Manufacturer;
+DELETE FROM dbo.Manufacturer;
 
 --	INSERT SAMPLE VALUES
 --  insert into manufacturer table
-insert into dbo.Manufacturer (Name, Address) values ('Carilion Materials Management', '9 Aberg Pass');
-insert into dbo.Manufacturer (Name, Address) values ('Fikes Northwest, Corp.', '874 Cody Circle');
-insert into dbo.Manufacturer (Name, Address) values ('IASO Inc', '40480 Randy Circle');
-insert into dbo.Manufacturer (Name, Address) values ('Uriel Pharmacy Inc.', '32555 Fulton Alley');
-insert into dbo.Manufacturer (Name, Address) values ('A-S Medication Solutions LLC', '5 Corry Center');
-insert into dbo.Manufacturer (Name, Address) values ('Dispensing Solutions, Inc.', '5 Luster Pass');
-insert into dbo.Manufacturer (Name, Address) values ('Cresson', '9 Springview Plaza');
-insert into dbo.Manufacturer (Name, Address) values ('DIRECT RX', '86302 Alpine Way');
-insert into dbo.Manufacturer (Name, Address) values ('Wal-Mart Stores,Inc', '6236 Bunting Park');
-insert into dbo.Manufacturer (Name, Address) values ( 'Topco Associates LLC', '976 Heath Crossing');
 
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('Carilion Materials Management', '9 Aberg Pass');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('Fikes Northwest, Corp.', '874 Cody Circle');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('IASO Inc', '40480 Randy Circle');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('Uriel Pharmacy Inc.', '32555 Fulton Alley');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('A-S Medication Solutions LLC', '5 Corry Center');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('Dispensing Solutions, Inc.', '5 Luster Pass');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('Cresson', '9 Springview Plaza');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('DIRECT RX', '86302 Alpine Way');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('Wal-Mart Stores,Inc', '6236 Bunting Park');
+INSERT INTO dbo.Manufacturer (Name, Address)
+        VALUES ('Topco Associates LLC', '976 Heath Crossing');
+DELETE FROM dbo.MeasurementUnit;
 
-delete from dbo.MeasurementUnit;
 -- insert into measurement unit table
-insert into dbo.MeasurementUnit  (Name) values ( 'package');
-insert into dbo.MeasurementUnit  (Name) values ( 'capsule');
-insert into dbo.MeasurementUnit  (Name) values ( 'ampule');
-insert into dbo.MeasurementUnit  (Name) values ( 'ml');
+
+INSERT INTO dbo.MeasurementUnit (Name)
+        VALUES ('package');
+INSERT INTO dbo.MeasurementUnit (Name)
+        VALUES ('capsule');
+INSERT INTO dbo.MeasurementUnit (Name)
+        VALUES ('ampule');
+INSERT INTO dbo.MeasurementUnit (Name)
+        VALUES ('ml');
