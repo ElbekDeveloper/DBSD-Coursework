@@ -1,4 +1,6 @@
-﻿namespace ApplicationCore.Resources
+﻿using System;
+
+namespace ApplicationCore.Resources
 {
     public class StaffMemberResource
     {
