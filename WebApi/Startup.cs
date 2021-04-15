@@ -26,7 +26,11 @@ namespace WebApi
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IMeasurementUnitRepository, MeasurementUnitRepository>();
+            services.AddTransient<IManufacturerRepository, ManufacturerRepository>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IMeasurementUnitService, MeasurementUnitService>();
+            services.AddTransient<IManufacturerService, ManufacturerService>();
             services.AddAutoMapper(typeof(MappingProfile));
         }
 

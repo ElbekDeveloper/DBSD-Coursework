@@ -28,5 +28,21 @@ namespace WebApi.Controllers
         {
             return Ok(await _productService.GetAllProductsAsync(cancellationToken));
         }
+        [HttpGet]
+        [Route("{id:int}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Individual Product", Type = typeof(GetProductResource))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult<GetProductResource>> GetProductById([FromRoute]int id, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _productService.GetProductByIdAsync(id, cancellationToken));
+        }
+
+        [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Product Creation", Type = typeof(int))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> PostProduct([FromBody] AddProductResource productResource, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _productService.CreateProductAsync(productResource, cancellationToken));
+        }
     }
 }

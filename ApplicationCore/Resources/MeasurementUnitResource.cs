@@ -1,6 +1,6 @@
-﻿namespace Domain.Models
+﻿namespace ApplicationCore.Resources
 {
-    public class MeasurementUnit : BaseEntity
+    public class MeasurementUnitResource
     {
         public int MeasurementUnitId { get; set; }
         public string Name { get; set; }

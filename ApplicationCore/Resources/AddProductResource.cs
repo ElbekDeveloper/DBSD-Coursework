@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ApplicationCore.Resources
 {
-    public class GetProductResource
+    public class AddProductResource
     {
-        public int ProductId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal? Price { get; set; }
         public DateTime ManufacturedDate { get; set; }
         public DateTime ExpirationDate { get; set; }
-        public ManufacturerResource Manufacturer { get; set; }
-        public MeasurementUnitResource  MeasurementUnit { get; set; }
+        public int ManufacturerId { get; set; }
+        public int MeasurementUnitId { get; set; }
         public int QuantityAtWarehouse { get; set; }
-
     }
 }

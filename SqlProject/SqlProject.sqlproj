@@ -62,16 +62,20 @@
     <Folder Include="dbo\Tables\" />
     <Folder Include="PublishLocations" />
     <Folder Include="PostDeploymentScript" />
+    <Folder Include="dbo\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Manufacturer.sql" />
     <Build Include="dbo\Tables\MeasurementUnit.sql" />
     <Build Include="dbo\Tables\Product.sql" />
+    <Build Include="dbo\Stored Procedures\spProduct_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\spProduct_GetById.sql" />
+    <Build Include="dbo\Stored Procedures\spProduct_Insert.sql" />
+    <None Include="PostDeploymentScript\Script.PopulateProducts.sql" />
+    <Build Include="dbo\Stored Procedures\spManufacturer_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\spMeasurementUnit_GetAll.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\SqlProject.publish.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="PostDeploymentScript\Script.PopulateProduct.sql" />
   </ItemGroup>
 </Project>
