@@ -22,19 +22,16 @@ namespace SqlInfrastructure.Repositories
         {
             try
             {
-                var procedure = "INSERT INTO Products (Name, Price, Quantity) VALUES (@Name, @Price, @Quantity)";
-        //public int ProductId { get; set; }
-        //public string Name { get; set; }
-        //public string Description { get; set; }
-        //public decimal? Price { get; set; }
-        //public DateTime ManufacturedDate { get; set; }
-        //public DateTime ExpirationDate { get; set; }
-        //public Manufacturer Manufacturer { get; set; }
-        //public MeasurementUnit MeasurementUnit { get; set; }
-        var parameters = new DynamicParameters();
+                var procedure = "spProduct_Insert";
+                var parameters = new DynamicParameters();
                 parameters.Add("Name", entity.Name, DbType.String);
+                parameters.Add("Description", entity.Description, DbType.String);
                 parameters.Add("Price", entity.Price, DbType.Decimal);
-                parameters.Add("Quantity", entity.Quantity, DbType.Int32);
+                parameters.Add("ManufacturedDate", entity.ManufacturedDate, DbType.DateTime);
+                parameters.Add("ExpirationDate", entity.ExpirationDate, DbType.DateTime);
+                parameters.Add("ManufacturerId", entity.Manufacturer.ManufacturerId, DbType.Int32);
+                parameters.Add("MeasurementUnitId", entity.MeasurementUnit.MeasurementUnitId, DbType.Int32);
+                parameters.Add("QuantityAtWarehouse", entity.QuantityAtWarehouse, DbType.Int32);
 
                 using (var connection = CreateConnection())
                 {
@@ -89,7 +86,7 @@ namespace SqlInfrastructure.Repositories
 
                 using (var connection = CreateConnection())
                 {
-                    return (await connection.QueryAsync
+                    var result = (await connection.QueryAsync
                         <Product, Manufacturer, MeasurementUnit, Product>(
                         sql: procedure,
                         map: (product, manufacturer, measurementUnit) =>
@@ -101,7 +98,8 @@ namespace SqlInfrastructure.Repositories
                         param: parameters,
                         splitOn: "ManufacturerId, MeasurementUnitId",
                         commandType: CommandType.StoredProcedure
-                        )).FirstOrDefault();
+                        )).FirstOrDefault<Product>();
+                    return result;
                 }
             }
             catch (Exception ex)
