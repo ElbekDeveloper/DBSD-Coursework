@@ -72,6 +72,8 @@
     <Build Include="dbo\Stored Procedures\spProduct_GetById.sql" />
     <Build Include="dbo\Stored Procedures\spProduct_Insert.sql" />
     <None Include="PostDeploymentScript\Script.PopulateProducts.sql" />
+    <Build Include="dbo\Stored Procedures\spManufacturer_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\spMeasurementUnit_GetAll.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\SqlProject.publish.xml" />
