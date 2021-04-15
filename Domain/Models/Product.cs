@@ -12,6 +12,7 @@ namespace Domain.Models
         public DateTime ExpirationDate { get; set; }
         public Manufacturer Manufacturer { get; set; }
         public MeasurementUnit MeasurementUnit { get; set; }
+        public int QuantityAtWarehouse { get; set; }
 
     }
 }
