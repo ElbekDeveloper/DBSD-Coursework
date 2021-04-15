@@ -51,6 +51,11 @@ namespace ApplicationCore.Services
             return productResource;
         }
 
-  
+        public async Task<int> UpdateProductAsync(int id, AddProductResource product, CancellationToken cancellationToken = default)
+        {
+            var entity = _mapper.Map<Product>(product);
+            entity.ProductId = id;
+           return  await _productRepository.UpdateAsync(entity, cancellationToken);
+        }
     }
 }

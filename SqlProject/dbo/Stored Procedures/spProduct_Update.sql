@@ -9,16 +9,16 @@
         @MeasurementUnitId int,
         @QuantityAtWarehouse int
 AS
-begin
-     UPDATE dbo.Product 
-     SET
-         Name =@Name,
-         Description =@Description,
-         Price =@Price,
-         ManufacturedDate=@ManufacturedDate,
-         ExpirationDate=@ExpirationDate,
-         ManufacturerId=@ManufacturerId,
-         MeasurementUnitId=@MeasurementUnitId,
-         QuantityAtWarehouse=@QuantityAtWarehouse
-    WHERE Product.Id = @ProductId;                                                                   		
- end
+BEGIN 
+    UPDATE dbo.Product
+    SET 
+          Name =@Name
+         ,Description =@Description
+         ,Price =@Price
+         ,ManufacturedDate=@ManufacturedDate
+         ,ExpirationDate=@ExpirationDate
+         ,ManufacturerId=@ManufacturerId
+         ,MeasurementUnitId=@MeasurementUnitId
+         ,QuantityAtWarehouse=@QuantityAtWarehouse
+    WHERE Product.Id = @ProductId; 
+END
