@@ -8,4 +8,3 @@ CREATE TABLE[dbo].[CounterAgent] (
 [PhoneNumber] VARCHAR(55) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
-

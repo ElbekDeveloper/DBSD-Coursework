@@ -11,4 +11,3 @@ CREATE TABLE[dbo].[Invoice] (
     CONSTRAINT[FK_CreatedStaffMemberId] FOREIGN KEY ([CreatedStaffId]) REFERENCES[dbo].[StaffMember] ([Id]),
     CONSTRAINT[FK_WarehouseId] FOREIGN KEY ([WarehouseId]) REFERENCES[dbo].[Warehouse] ([Id])
 );
-
