@@ -7,12 +7,13 @@ namespace ApplicationCore.Resources
     {
         public MappingProfile()
         {
-            CreateMap<Product, GetProductResource>()
-                        .ForMember(gproduct => gproduct.MeasurementUnit, opt => opt.MapFrom(p => p.MeasurementUnit.Name));
+            CreateMap<Product, GetProductResource>();
+                       
             CreateMap<Manufacturer, ManufacturerResource>().ReverseMap();
+            CreateMap<MeasurementUnit, MeasurementUnitResource>().ReverseMap();
             CreateMap<Product, AddProductResource>()
                         .ForMember(p => p.ManufacturerId, opt => opt.MapFrom(pr => pr.Manufacturer.ManufacturerId))
-                        .ForMember(p => p.ManufacturerId, opt => opt.MapFrom(pr => pr.MeasurementUnit.MeasurementUnitId))
+                        .ForMember(p => p.MeasurementUnitId, opt => opt.MapFrom(pr => pr.MeasurementUnit.MeasurementUnitId))
                         .ForMember(p => p.QuantityAtWarehouse, opt => opt.MapFrom(pr => pr.QuantityAtWarehouse))
                         .ReverseMap();
 
