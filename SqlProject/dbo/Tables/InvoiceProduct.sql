@@ -7,3 +7,4 @@ CREATE TABLE[dbo].[InvoiceProduct] (
     CONSTRAINT[FK_InvoiceId] FOREIGN KEY ([InvoiceId]) REFERENCES[dbo].[Invoice] ([Id]),
     CONSTRAINT[FK_ProductId] FOREIGN KEY ([ProductId]) REFERENCES[dbo].[Product] ([Id])
 );
+

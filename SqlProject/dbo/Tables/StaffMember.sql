@@ -8,3 +8,4 @@ CREATE TABLE[dbo].[StaffMember] (
 [PhoneNumber] VARCHAR(55) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
