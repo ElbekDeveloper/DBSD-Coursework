@@ -13,7 +13,7 @@ namespace ApplicationCore.Resources
         public DateTime ManufacturedDate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public ManufacturerResource Manufacturer { get; set; }
-        public string  MeasurementUnit { get; set; }
+        public MeasurementUnitResource  MeasurementUnit { get; set; }
         public int QuantityAtWarehouse { get; set; }
 
     }
