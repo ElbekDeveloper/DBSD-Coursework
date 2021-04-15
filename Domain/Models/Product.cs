@@ -4,6 +4,11 @@ namespace Domain.Models
 {
     public class Product : BaseEntity
     {
+        public Product()
+        {
+            Manufacturer = new Manufacturer();
+            MeasurementUnit = new MeasurementUnit();
+        }
         public int ProductId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
