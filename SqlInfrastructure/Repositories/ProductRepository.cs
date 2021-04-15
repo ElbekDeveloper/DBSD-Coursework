@@ -18,9 +18,33 @@ namespace SqlInfrastructure.Repositories
         {
         }
 
-        public Task<int> CreateAsync(Product entity, CancellationToken cancellationToken = default)
+        public async Task<int> CreateAsync(Product entity, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var procedure = "INSERT INTO Products (Name, Price, Quantity) VALUES (@Name, @Price, @Quantity)";
+        //public int ProductId { get; set; }
+        //public string Name { get; set; }
+        //public string Description { get; set; }
+        //public decimal? Price { get; set; }
+        //public DateTime ManufacturedDate { get; set; }
+        //public DateTime ExpirationDate { get; set; }
+        //public Manufacturer Manufacturer { get; set; }
+        //public MeasurementUnit MeasurementUnit { get; set; }
+        var parameters = new DynamicParameters();
+                parameters.Add("Name", entity.Name, DbType.String);
+                parameters.Add("Price", entity.Price, DbType.Decimal);
+                parameters.Add("Quantity", entity.Quantity, DbType.Int32);
+
+                using (var connection = CreateConnection())
+                {
+                    return (await connection.ExecuteAsync(sql:procedure, param: parameters, commandType: CommandType.StoredProcedure));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
         }
 
         public Task<int> DeleteAsync(Product entity, CancellationToken cancellationToken = default)

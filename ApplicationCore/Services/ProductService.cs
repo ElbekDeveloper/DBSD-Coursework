@@ -22,6 +22,12 @@ namespace ApplicationCore.Services
             _mapper = mapper;
         }
 
+        public async Task<int> CreateProductAsync(AddProductResource product, CancellationToken cancellationToken = default)
+        {
+            var entity = _mapper.Map<Product>(product);
+            return await _productRepository.CreateAsync(entity, cancellationToken);
+        }
+
         public async Task<List<GetProductResource>> GetAllProductsAsync(CancellationToken cancellationToken = default)
         {
 
