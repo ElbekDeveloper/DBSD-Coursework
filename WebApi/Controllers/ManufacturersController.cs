@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
+
     [Route("api/[controller]/")]
     [ApiController]
     public class ManufacturersController : ControllerBase
@@ -26,7 +27,7 @@ namespace WebApi.Controllers
         [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, Description = "All Manufacturers", Type = typeof(List<ManufacturerResource>))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
-        public async Task<ActionResult<IEnumerable<GetProductResource>>> GetManufacturers(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<IEnumerable<ManufacturerResource>>> GetManufacturers(CancellationToken cancellationToken = default)
         {
             return Ok(await _manufacturerService.GetAllManufacturersAsync(cancellationToken));
         }
