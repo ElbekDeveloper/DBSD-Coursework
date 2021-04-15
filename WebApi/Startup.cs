@@ -32,12 +32,15 @@ namespace WebApi
             services.AddTransient<IWarehouseRepository, WarehouseRepository>();
             services.AddTransient<IMeasurementUnitRepository, MeasurementUnitRepository>();
             services.AddTransient<IManufacturerRepository, ManufacturerRepository>();
+            services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IMeasurementUnitService, MeasurementUnitService>();
             services.AddTransient<IManufacturerService, ManufacturerService>();
             services.AddTransient<ICounterAgentService, CounterAgentService>();
             services.AddTransient<IStaffMemberService, StaffMemberService>();
             services.AddTransient<IWarehouseService, WarehouseService>();
+            services.AddTransient<IInvoiceService, InvoiceService>();
 
             services.AddAutoMapper(typeof(MappingProfile));
         }
