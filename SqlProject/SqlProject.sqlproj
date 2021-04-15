@@ -63,6 +63,7 @@
     <Folder Include="PublishLocations" />
     <Folder Include="PostDeploymentScript" />
     <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="Compares" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Manufacturer.sql" />
@@ -76,8 +77,19 @@
     <Build Include="dbo\Stored Procedures\spMeasurementUnit_GetAll.sql" />
     <Build Include="dbo\Stored Procedures\spProduct_Delete.sql" />
     <Build Include="dbo\Stored Procedures\spProduct_Update.sql" />
+    <Build Include="dbo\Tables\StaffMember.sql" />
+    <Build Include="dbo\Tables\InvoiceProduct.sql" />
+    <Build Include="dbo\Tables\Invoice.sql" />
+    <Build Include="dbo\Tables\CounterAgent.sql" />
+    <Build Include="dbo\Tables\Warehouse.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\SqlProject.publish.xml" />
+    <None Include="Compares\LocalDbToProject.Compare.scmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploymentScript\Script.PopulateCounterAgent.sql" />
+    <None Include="PostDeploymentScript\Script.PopulateStaffMember.sql" />
+    <None Include="PostDeploymentScript\Script.PopulateWarehouse.sql" />
   </ItemGroup>
 </Project>
