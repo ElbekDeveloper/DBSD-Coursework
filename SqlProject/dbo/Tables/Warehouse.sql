@@ -4,4 +4,3 @@ CREATE TABLE[dbo].[Warehouse] (
 [Address] VARCHAR(255) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
-
