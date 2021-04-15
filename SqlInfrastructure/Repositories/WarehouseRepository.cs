@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
-using ApplicationCore.Interfaces.RepositoryInterfaces;
-using System.Threading.Tasks;
+﻿using ApplicationCore.Interfaces.RepositoryInterfaces;
+using Dapper;
 using Domain.Models;
-using System.Threading;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
-
+using System.Data;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 namespace SqlInfrastructure.Repositories
 {
     public class WarehouseRepository : BaseRepository, IWarehouseRepository
@@ -23,9 +26,21 @@ namespace SqlInfrastructure.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task<List<Warehouse>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<List<Warehouse>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                string procedure = "spWarehouse_GetAll";
+                using (var connection = CreateConnection())
+                {
+                    return (await connection.QueryAsync<Warehouse>(sql: procedure, commandType: CommandType.StoredProcedure)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message, ex);
+            }
         }
 
         public Task<Warehouse> GetByIdAsync(int id, CancellationToken cancellationToken = default)
