@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Interfaces.RepositoryInterfaces
 {
-    public interface ICounterAgentRepository: IRepository<CounterAgent>
-    {
-    }
+public interface ICounterAgentRepository: IRepository<CounterAgent>
+{
+}
 }

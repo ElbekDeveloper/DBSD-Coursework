@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Interfaces.RepositoryInterfaces
 {
-    public interface IWarehouseRepository:IRepository<Warehouse>
-    {
-    }
+public interface IWarehouseRepository:IRepository<Warehouse>
+{
+}
 }

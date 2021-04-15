@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Interfaces.RepositoryInterfaces
 {
-    public interface IStaffMemberRepository:IRepository<StaffMember>
-    {
-    }
+public interface IStaffMemberRepository:IRepository<StaffMember>
+{
+}
 }

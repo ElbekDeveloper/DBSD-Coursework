@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces.ServiceInterfaces
 {
-    public interface IStaffMemberService
-    {
-        Task<List<StaffMemberResource>> GetAllStaffMembersAsync(CancellationToken cancellationToken = default);
-    }
+public interface IStaffMemberService
+{
+    Task<List<StaffMemberResource>> GetAllStaffMembersAsync(CancellationToken cancellationToken = default);
+}
 }
