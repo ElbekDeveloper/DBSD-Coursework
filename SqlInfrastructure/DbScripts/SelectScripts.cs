@@ -4,8 +4,8 @@ using System.Text;
 
 namespace SqlInfrastructure.DbScripts
 {
-    public abstract class SelectScripts
-    {
-        
-    }
+public abstract class SelectScripts
+{
+
+}
 }
