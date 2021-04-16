@@ -64,7 +64,6 @@
     <Folder Include="PostDeploymentScript" />
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="Compares" />
-    <Folder Include="dbo\Database Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Manufacturer.sql" />
@@ -94,10 +93,6 @@
     <Build Include="dbo\Tables\spInvoiceProduct_Insert.sql" />
     <Build Include="dbo\Stored Procedures\spInvoice_Update.sql" />
     <Build Include="dbo\Stored Procedures\spInvoiceProduct_Update.sql" />
-    <Build Include="dbo\Database Triggers\trProduct_CheckExpiration.sql" />
-    <Build Include="dbo\Database Triggers\trProduct_ModificationDisallow.sql" />
-    <Build Include="dbo\Database Triggers\trInvoice_Log.sql" />
-    <Build Include="dbo\Database Triggers\trInvoice_CheckCounterAgentNumber.sql" />
     <Build Include="dbo\Tables\InvoiceLog.sql" />
   </ItemGroup>
   <ItemGroup>
