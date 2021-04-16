@@ -11,5 +11,6 @@ namespace ApplicationCore.Interfaces.ServiceInterfaces
         Task<GetInvoiceResource> GetInvoiceByIdAsync(int id, CancellationToken cancellationToken = default);
 
         Task<int> DeleteInvoiceAsync(int id, CancellationToken cancellationToken = default);
+        Task<int> CreateInvoice(AddInvoiceResource invoice,CancellationToken cancellationToken = default);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Interfaces.RepositoryInterfaces;
+using ApplicationCore.Resources;
 using Dapper;
 using Domain.Models;
 using Microsoft.Extensions.Configuration;
@@ -18,9 +19,138 @@ namespace SqlInfrastructure.Repositories
         {
         }
 
+        public async Task<int> CreateInvoiceAsync(AddInvoiceResource entity, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                using (var connection = CreateConnection())
+                {
+                    string procedureInvoice = "spInvoice_Insert";
+
+                    #region Parameters for Invoice Stored Procedure
+                    var invoiceParams = new DynamicParameters();
+                    invoiceParams.Add("@Id", 0, DbType.Int32, ParameterDirection.Output);
+                    invoiceParams.Add("CreatedDate", entity.CreatedDate, DbType.Date);
+                    invoiceParams.Add("ConfirmationStatus", entity.ConfirmationStatus, DbType.Boolean);
+                    invoiceParams.Add("TotalCost", entity.TotalCost, DbType.Decimal);
+                    invoiceParams.Add("CreatedStaffId", entity.CreatedStaffId, DbType.Int32);
+                    invoiceParams.Add("AgentId", entity.AgentId, DbType.Int32);
+                    invoiceParams.Add("WarehouseId", entity.WarehouseId, DbType.Int32);
+
+                    #endregion
+
+                    string procedureInvoiceProduct = "spInvoiceProduct_Insert";
+
+                    #region Parameter for InvoiceProduct Stored Procedure
+                    var invoiceProductParams = entity.Products;
+
+                    #endregion
+                    connection.Open();
+
+                    using (var transac = connection.BeginTransaction())
+                    {
+                        int recordsAffected = await connection.ExecuteAsync(
+                            sql: procedureInvoice,
+                            param: invoiceParams,
+                            commandType: CommandType.StoredProcedure,
+                            transaction: transac);
+                        //Get newly created InvoiceId
+                        int newInvoiceId = invoiceParams.Get<int>("@Id");
+                        invoiceProductParams.ForEach(p => p.InvoiceId = newInvoiceId);
+                        try
+                        {
+                            //delete invoice related rows from relationship table
+                            await connection.ExecuteAsync(
+                                sql: procedureInvoiceProduct,
+                                param: invoiceProductParams,
+                                commandType: CommandType.StoredProcedure,
+                                transaction: transac
+                                );
+                            transac.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transac.Rollback();
+                            throw new Exception(ex.Message, ex);
+                        }
+                        return newInvoiceId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message, ex);
+            }
+        }
+        /// <summary>
+        /// Not implemented yet!
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public Task<int> CreateAsync(Invoice entity, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
+            //try
+            //{
+            //    using (var connection = CreateConnection())
+            //    {
+            //        string procedureInvoice = "spInvoice_Insert";
+
+            //        #region Parameters for Invoice Stored Procedure
+            //        var invoiceParams = new DynamicParameters();
+            //        invoiceParams.Add("@Id", 0, DbType.Int32, ParameterDirection.Output);
+            //        invoiceParams.Add("CreatedDate", entity.CreatedDate, DbType.Date);
+            //        invoiceParams.Add("ConfirmationStatus", entity.ConfirmationStatus, DbType.Boolean);
+            //        invoiceParams.Add("CreatedStaffId", entity.CreatedStaff.StaffMemberId, DbType.Int32);
+            //        invoiceParams.Add("AgentId", entity.CounterAgent.CounterAgentId, DbType.Int32);
+            //        invoiceParams.Add("WarehouseId", entity.Warehouse.WarehouseId, DbType.Int32);
+
+            //        #endregion
+
+            //        string procedureInvoiceProduct = "spInvoiceProduct_Insert";
+
+            //        #region Parameter for InvoiceProduct Stored Procedure
+            //        var invoiceProductParams = new DynamicParameters();
+
+            //        #endregion
+            //        connection.Open();
+
+            //        using (var transac = connection.BeginTransaction())
+            //        {
+            //            int recordsAffected = await connection.ExecuteAsync(
+            //                sql: procedureInvoice,
+            //                param: invoiceParams,
+            //                commandType: CommandType.StoredProcedure,
+            //                transaction: transac);
+            //            //Get newly created InvoiceId
+            //            int newInvoiceId = invoiceParams.Get<int>("@Id");
+            //            try
+            //            {
+            //                //delete invoice related rows from relationship table
+            //                await connection.ExecuteAsync(
+            //                    sql: procedureInvoiceProduct,
+            //                    param: invoiceProductParams,
+            //                    commandType: CommandType.StoredProcedure,
+            //                    transaction: transac
+            //                    );
+            //                transac.Commit();
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                transac.Rollback();
+            //                throw new Exception(ex.Message, ex);
+            //            }
+            //            return newInvoiceId;
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //    throw new Exception(ex.Message, ex);
+            //}
         }
 
         public async Task<int> DeleteAsync(int id, CancellationToken cancellationToken = default)
