@@ -8,7 +8,14 @@ namespace ApplicationCore.Resources
         public MappingProfile()
         {
             CreateMap<Product, GetProductResource>();
-                       
+            CreateMap<AddInvoiceProductResource, InvoiceProduct>();
+            //CreateMap<AddInvoiceResource, Invoice>()
+            //    .ForMember(i => i.CreatedStaff.StaffMemberId, opt => opt.MapFrom(ir => ir.CreatedStaffId))
+            //    .ForMember(i => i.CreatedDate, opt => opt.MapFrom(ir => ir.CreatedDate))
+            //    .ForMember(i => i.CounterAgent.CounterAgentId, opt => opt.MapFrom(ir => ir.AgentId))
+            //    .ForMember(i => i.TotalCost, opt => opt.MapFrom(ir => ir.TotalCost))
+            //    .ForMember(i => i.Warehouse.WarehouseId, opt => opt.MapFrom(ir => ir.WarehouseId));
+
             CreateMap<Manufacturer, ManufacturerResource>().ReverseMap();
             CreateMap<MeasurementUnit, MeasurementUnitResource>().ReverseMap();
             CreateMap<Warehouse,WarehouseResource>().ReverseMap();
