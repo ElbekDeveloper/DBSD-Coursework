@@ -1,43 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ApplicationCore.Helpers.Filters
-{
-public class InvoiceFilter
-{
+namespace ApplicationCore.Helpers.Filters {
+  public class InvoiceFilter {
     public DateTime? DateStart {
-        get;
-        set;
+      get;
+      set;
     }
     public DateTime? DateEnd {
-        get;
-        set;
+      get;
+      set;
     }
-    public bool? AgentIsCustomer {
-        get;
-        set;
+    public bool ? AgentIsCustomer {
+      get;
+      set;
     }
-    public bool? AgentIsSeller {
-        get;
-        set;
+    public bool ? AgentIsSeller {
+      get;
+      set;
     }
     public decimal? MinPrice {
-        get;
-        set;
+      get;
+      set;
     }
     public decimal? MaxPrice {
-        get;
-        set;
+      get;
+      set;
     }
     public string StaffName {
-        get;
-        set;
+      get;
+      set;
     }
     public string ProductName {
-        get;
-        set;
+      get;
+      set;
     }
-    //public List<string> SortBy { get; set; }
-
-}
+    // public List<string> SortBy { get; set; }
+  }
 }
