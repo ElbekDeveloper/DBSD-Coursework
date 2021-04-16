@@ -23,9 +23,30 @@ namespace SqlInfrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<int> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string procedure = "spInvoice_Delete";
+                var parameters = new DynamicParameters();
+                parameters.Add("InvoiceId", id, DbType.Int32);
+
+                using (var connection = CreateConnection())
+                {
+                    var result = await connection.ExecuteAsync
+                        (
+                        sql: procedure,
+                        param: parameters,
+                        commandType: CommandType.StoredProcedure
+                        );
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message, ex);
+            }
         }
 
         public async Task<IEnumerable<Invoice>> GetAllAsync(CancellationToken cancellationToken = default)

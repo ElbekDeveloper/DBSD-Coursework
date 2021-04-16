@@ -9,5 +9,7 @@ namespace ApplicationCore.Interfaces.ServiceInterfaces
     {
         Task<List<GetInvoiceResource>> GetAllInvoicesAsync(CancellationToken cancellationToken = default);
         Task<GetInvoiceResource> GetInvoiceByIdAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<int> DeleteInvoiceAsync(int id, CancellationToken cancellationToken = default);
     }
 }
