@@ -8,7 +8,6 @@ namespace ApplicationCore.Helpers.Filters
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
         public bool? AgentIsCustomer { get; set; }
-        public bool? AgentIsSeller { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
         public string StaffName { get; set; }
