@@ -228,12 +228,12 @@ namespace SqlInfrastructure.Repositories
                 using (var connection = CreateConnection())
                 {
                     var data = (await connection.QueryAsync
-                        <Invoice, StaffMember, CounterAgent, Warehouse, InvoiceProduct, Invoice>(
+                        <Invoice, Warehouse, CounterAgent, StaffMember, InvoiceProduct, Invoice>(
                         sql: procedure,
-                        map: (invoice, staffMember, counterAgent, warehouse, invoiceProduct) => {
-                            invoice.CreatedStaff = staffMember;
-                            invoice.CounterAgent = counterAgent;
+                        map: (invoice, warehouse, counterAgent, staffMember, invoiceProduct) => {
                             invoice.Warehouse = warehouse;
+                            invoice.CounterAgent = counterAgent;
+                            invoice.CreatedStaff = staffMember;
                             invoice.Products.Add(invoiceProduct);
                             return invoice;
                         },
