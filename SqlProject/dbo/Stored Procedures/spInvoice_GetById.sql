@@ -1,5 +1,6 @@
-﻿CREATE PROCEDURE [dbo].[spInvoice_GetAll]
-AS
+﻿CREATE PROCEDURE [dbo].[spInvoice_GetById]
+	@InvoiceId int
+as
 begin 
 	select 
 	[i].[Id] as InvoiceId, [i].[CreatedDate], [i].[ConfirmationStatus], [i].[TotalCost], 
@@ -23,6 +24,7 @@ begin
 	on p.ManufacturerId=m.Id
 	join dbo.MeasurementUnit mu
 	on p.MeasurementUnitId=mu.Id
+	where i.Id = @InvoiceId
 	order by i.Id asc;
 
 end 
