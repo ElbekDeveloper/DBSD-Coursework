@@ -27,7 +27,7 @@ namespace SqlInfrastructure.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<List<CounterAgent>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<CounterAgent>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             try
             {
@@ -53,5 +53,6 @@ namespace SqlInfrastructure.Repositories
         {
             throw new System.NotImplementedException();
         }
+
     }
 }

@@ -26,7 +26,7 @@ namespace SqlInfrastructure.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<List<Warehouse>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Warehouse>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             try
             {
