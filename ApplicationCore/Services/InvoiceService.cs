@@ -47,5 +47,10 @@ namespace ApplicationCore.Services
 
             return invoiceResource;
         }
+
+        public async Task<int> UpdateInvoiceAsync(int id, AddInvoiceResource invoice, CancellationToken cancellationToken = default)
+        {
+            return await _invoiceRepository.UpdateInvoiceAsync(id, invoice, cancellationToken);
+        }
     }
 }

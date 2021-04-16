@@ -59,7 +59,6 @@ namespace SqlInfrastructure.Repositories
                         invoiceProductParams.ForEach(p => p.InvoiceId = newInvoiceId);
                         try
                         {
-                            //delete invoice related rows from relationship table
                             await connection.ExecuteAsync(
                                 sql: procedureInvoiceProduct,
                                 param: invoiceProductParams,
@@ -263,6 +262,68 @@ namespace SqlInfrastructure.Repositories
         public Task<int> UpdateAsync(Invoice entity, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<int> UpdateInvoiceAsync(int id, AddInvoiceResource entity, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                using (var connection = CreateConnection())
+                {
+                    string procedureInvoice = "spInvoice_Update";
+
+                    #region Parameters for Invoice Stored Procedure
+                    var invoiceParams = new DynamicParameters();
+                    invoiceParams.Add("@Id", id, DbType.Int32);
+                    invoiceParams.Add("CreatedDate", entity.CreatedDate, DbType.Date);
+                    invoiceParams.Add("ConfirmationStatus", entity.ConfirmationStatus, DbType.Boolean);
+                    invoiceParams.Add("TotalCost", entity.TotalCost, DbType.Decimal);
+                    invoiceParams.Add("CreatedStaffId", entity.CreatedStaffId, DbType.Int32);
+                    invoiceParams.Add("AgentId", entity.AgentId, DbType.Int32);
+                    invoiceParams.Add("WarehouseId", entity.WarehouseId, DbType.Int32);
+
+                    #endregion
+
+                    string procedureInvoiceProduct = "spInvoiceProduct_Update";
+
+                    #region Parameter for InvoiceProduct Stored Procedure
+                    var invoiceProductParams = entity.Products;
+                    
+                    #endregion
+                    connection.Open();
+
+                    using (var transac = connection.BeginTransaction())
+                    {
+                        int recordsAffected = await connection.ExecuteAsync(
+                            sql: procedureInvoice,
+                            param: invoiceParams,
+                            commandType: CommandType.StoredProcedure,
+                            transaction: transac);
+                        
+                        try
+                        {
+                            await connection.ExecuteAsync(
+                                sql: procedureInvoiceProduct,
+                                param: invoiceProductParams,
+                                commandType: CommandType.StoredProcedure,
+                                transaction: transac
+                                );
+                            transac.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transac.Rollback();
+                            throw new Exception(ex.Message, ex);
+                        }
+                        return id;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message, ex);
+            }
         }
     }
 }
