@@ -374,11 +374,14 @@ namespace SqlInfrastructure.Repositories
                         parameters.Add("@DateEnd", filter.DateEnd);
                     }
 
-                    if (filter.AgentIsCustomer.HasValue)
+                    if (filter.AgentIsCustomer.HasValue && filter.AgentIsCustomer == true)
                     {
                         sqlWhere += " [ca].[IsCustomer] = 1 AND";
                     }
-                    
+                    if (filter.AgentIsCustomer.HasValue && filter.AgentIsCustomer == false)
+                    {
+                        sqlWhere += " [ca].[IsCustomer] = 0 AND";
+                    }
 
                     if (sqlWhere.Length > 0)
                         sqlWhere = " WHERE " + sqlWhere.Substring(0, sqlWhere.Length - 3);
