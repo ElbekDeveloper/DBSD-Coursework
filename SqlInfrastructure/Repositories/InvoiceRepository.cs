@@ -1,8 +1,10 @@
-﻿using ApplicationCore.Interfaces.RepositoryInterfaces;
+﻿using ApplicationCore.Helpers.Filters;
+using ApplicationCore.Interfaces.RepositoryInterfaces;
 using ApplicationCore.Resources;
 using Dapper;
 using Domain.Models;
 using Microsoft.Extensions.Configuration;
+using SqlInfrastructure.DbScripts;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -317,6 +319,103 @@ namespace SqlInfrastructure.Repositories
                         }
                         return id;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public async Task<List<Invoice>> GetInvoicesWithFilters(InvoiceFilter filter, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                using (var connection = CreateConnection())
+                {
+                    string query =
+            @"select[i].[Id] as InvoiceId, [i].[CreatedDate], [i].[ConfirmationStatus], [i].[TotalCost], [w].[Id] as WarehouseId , [w].[Address], [ca].[Id] as CounterAgentId, [ca].[FirstName], [ca].[LastName], [ca].[Address], [ca].[Email], [ca].[IsCustomer], [ca].[PhoneNumber],[sm].[Id] as StaffMemberId, [sm].[FirstName], [sm].[LastName], [sm].[Address], [sm].[Email], [sm].[RegisterDate], [sm].[PhoneNumber], [p].[Id] as ProductId, [p].[Name], [p].[Description], [p].[Price], [p].[ManufacturedDate], [p].[ExpirationDate], [m].[Name] as Manufacturer, [mu].[Name] as MeasurementUnit, [p].[QuantityAtWarehouse], [inprod].[SoldPrice], [inprod].[SoldQuantity] from dbo.Invoice i join dbo.CounterAgent ca on i.AgentId = ca.Id join dbo.Warehouse w on i.WarehouseId = w.Id join dbo.StaffMember sm on i.CreatedStaffId = sm.Id join dbo.InvoiceProduct inprod on i.Id = inprod.InvoiceId join dbo.Product p on inprod.ProductId = p.Id join dbo.Manufacturer m on p.ManufacturerId = m.Id join dbo.MeasurementUnit mu on p.MeasurementUnitId = mu.Id";
+        var parameters = new DynamicParameters();
+
+                    #region Filtration
+                    string sqlWhere = "";
+                    if (!string.IsNullOrWhiteSpace(filter.ProductName))
+                    {
+                        sqlWhere += " [p].[Name] like  '%' + rtrim(ltrim(@ProductName)) + '%' AND";
+                        parameters.Add("@ProductName", filter.ProductName);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(filter.StaffName))
+                    {
+                        sqlWhere += " [sm].[FirstName] like rtrim(ltrim(@StaffName)) + '%' AND";
+                        parameters.Add("@StaffName", filter.StaffName);
+                    }
+                    if (filter.DateStart.HasValue)
+                    {
+                        sqlWhere += " [i].[CreatedDate] >= @DateStart AND";
+                        parameters.Add("@DateStart", filter.DateStart);
+                    }
+
+                    if (filter.MinPrice.HasValue)
+                    {
+                        sqlWhere += "  [i].[TotalCost] >= @MinPrice AND";
+                        parameters.Add("@MinPrice", filter.MinPrice);
+                    }
+                    if (filter.MaxPrice.HasValue)
+                    {
+                        sqlWhere += "  [i].[TotalCost] <= @MaxPrice AND";
+                        parameters.Add("@MaxPrice", filter.MaxPrice);
+                    }
+
+                    if (filter.DateEnd.HasValue)
+                    {
+                        sqlWhere += " [i].[CreatedDate] <= @DateEnd AND";
+                        parameters.Add("@DateEnd", filter.DateEnd);
+                    }
+
+                    if ((bool)filter.AgentIsCustomer)
+                    {
+                        sqlWhere += " [ca].[IsCustomer] = 1 AND";
+                    }
+                    if ((bool)filter.AgentIsSeller)
+                    {
+                        sqlWhere += " [ca].[IsCustomer] = 0 AND";
+                    }
+                    if ((bool)filter.AgentIsSeller == true && (bool)filter.AgentIsCustomer== true)
+                    {
+                        sqlWhere += " ";
+                    }
+
+                    if (sqlWhere.Length > 0)
+                        sqlWhere = " WHERE " + sqlWhere.Substring(0, sqlWhere.Length - 3);
+                    #endregion
+
+                    string sqlQuery = query + sqlWhere;
+                    var data = (await connection.QueryAsync
+                        <Invoice, StaffMember, CounterAgent, Warehouse, InvoiceProduct, Invoice>(
+                        sql: sqlQuery,
+                        map: (invoice, staffMember, counterAgent, warehouse, invoiceProduct) => {
+                            invoice.CreatedStaff = staffMember;
+                            invoice.CounterAgent = counterAgent;
+                            invoice.Warehouse = warehouse;
+                            invoice.Products.Add(invoiceProduct);
+                            return invoice;
+                        },
+                        param: parameters,
+                        splitOn: "InvoiceId, WarehouseId, CounterAgentId, StaffMemberId, ProductId",
+                        commandType: CommandType.Text
+                        ))
+                        .ToList();
+
+                    var result = data.GroupBy(p => p.InvoiceId).Select(g =>
+                    {
+                        var groupedInvoice = g.First();
+                        groupedInvoice.Products = g.Select(p => p.Products.Single()).ToList();
+                        return groupedInvoice;
+                    });
+
+                    return result.ToList();
                 }
             }
             catch (Exception ex)

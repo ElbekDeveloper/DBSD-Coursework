@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Interfaces.RepositoryInterfaces;
+﻿using ApplicationCore.Helpers.Filters;
+using ApplicationCore.Interfaces.RepositoryInterfaces;
 using ApplicationCore.Interfaces.ServiceInterfaces;
 using ApplicationCore.Resources;
 using AutoMapper;
@@ -34,6 +35,14 @@ namespace ApplicationCore.Services
         public async Task<List<GetInvoiceResource>> GetAllInvoicesAsync(CancellationToken cancellationToken = default)
         {
             var invoices = await _invoiceRepository.GetAllAsync(cancellationToken);
+            var invoiceResources = _mapper.Map<List<GetInvoiceResource>>(invoices);
+
+            return invoiceResources;
+        }
+
+        public async Task<List<GetInvoiceResource>> GetAllInvoicesWithFiltersAsync(InvoiceFilter invoiceFilter, CancellationToken cancellationToken = default)
+        {
+            var invoices = await _invoiceRepository.GetInvoicesWithFilters(invoiceFilter, cancellationToken);
             var invoiceResources = _mapper.Map<List<GetInvoiceResource>>(invoices);
 
             return invoiceResources;
