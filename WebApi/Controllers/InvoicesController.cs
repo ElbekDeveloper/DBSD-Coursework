@@ -103,7 +103,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("export/xml")]
-        public async Task<ActionResult> ExportXml(InvoiceFilter invoiceFilter, CancellationToken cancellationToken)
+        public async Task<ActionResult> ExportXml([FromQuery]InvoiceFilter invoiceFilter, CancellationToken cancellationToken)
         {
             var list = await _invoiceService.GetAllInvoicesWithFiltersAsync(invoiceFilter, cancellationToken);
             var memory = new MemoryStream();
