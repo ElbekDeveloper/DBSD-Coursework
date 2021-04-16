@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Interfaces.ServiceInterfaces;
+﻿using ApplicationCore.Helpers.Filters;
+using ApplicationCore.Interfaces.ServiceInterfaces;
 using ApplicationCore.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -21,12 +22,20 @@ namespace WebApi.Controllers
             _invoiceService = invoiceService;
         }
 
+        //[HttpGet]
+        //[SwaggerResponse((int)HttpStatusCode.OK, Description = "All Invoices", Type = typeof(List<GetInvoiceResource>))]
+        //[SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        //public async Task<ActionResult<IEnumerable<GetInvoiceResource>>> GetInvoices(CancellationToken cancellationToken = default)
+        //{
+        //    return Ok(await _invoiceService.GetAllInvoicesAsync(cancellationToken));
+        //}
+
         [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, Description = "All Invoices", Type = typeof(List<GetInvoiceResource>))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
-        public async Task<ActionResult<IEnumerable<GetInvoiceResource>>> GetInvoices(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<IEnumerable<GetInvoiceResource>>> GetInvoices([FromQuery]InvoiceFilter invoiceFilter,CancellationToken cancellationToken = default)
         {
-            return Ok(await _invoiceService.GetAllInvoicesAsync(cancellationToken));
+            return Ok(await _invoiceService.GetAllInvoicesWithFiltersAsync(invoiceFilter,cancellationToken));
         }
 
         [HttpPut]
