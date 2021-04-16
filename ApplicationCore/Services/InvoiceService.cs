@@ -28,5 +28,14 @@ namespace ApplicationCore.Services
 
             return invoiceResources;
         }
+
+        public async Task<GetInvoiceResource> GetInvoiceByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var invoice = await _invoiceRepository.GetByIdAsync(id, cancellationToken);
+
+            var invoiceResource = _mapper.Map<GetInvoiceResource>(invoice);
+
+            return invoiceResource;
+        }
     }
 }

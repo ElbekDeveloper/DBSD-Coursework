@@ -70,7 +70,7 @@ namespace SqlInfrastructure.Repositories
             }
         }
 
-        public async Task<List<Product>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             try
             {
