@@ -1,18 +1,26 @@
 ﻿using ApplicationCore.Interfaces.ServiceInterfaces;
 using ApplicationCore.Resources;
+using CsvHelper;
+using Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InvoicesController : ControllerBase
+    public class InvoicesController : Controller
     {
         private readonly IInvoiceService _invoiceService;
 
@@ -61,6 +69,137 @@ namespace WebApi.Controllers
         public async Task<IActionResult> DeleteInvoice([FromRoute] int id, CancellationToken cancellationToken = default)
         {
             return Ok(await _invoiceService.DeleteInvoiceAsync(id, cancellationToken));
+        }
+
+
+        // Import and Export endpoints
+
+        [HttpGet("export/json")]
+        public async Task<ActionResult> ExportJson()
+        {
+            var list = await _invoiceService.GetAllInvoicesAsync();
+
+
+            var memory = new MemoryStream();
+            var writer = new StreamWriter(memory);
+            var serializer = new JsonSerializer();
+            serializer.Serialize(writer, list);
+            writer.Flush();
+
+            memory.Position = 0;
+            if (memory != Stream.Null)
+                return File(memory, "application/json", $"Export_{DateTime.Now}.json");
+
+            return NotFound();
+        }
+
+        [HttpGet("export/xml")]
+
+        public async Task<ActionResult> ExportXml()
+        {
+            var list = await _invoiceService.GetAllInvoicesAsync();
+            
+            var memory = new MemoryStream();
+            var writer = new StreamWriter(memory);
+            var serializer = new XmlSerializer(typeof(List<GetInvoiceResource>));
+            serializer.Serialize(writer, list);
+            writer.Flush();
+
+            memory.Position = 0;
+            if (memory != Stream.Null)
+                return File(memory, "application/xml", $"Export_{DateTime.Now}.xml");
+
+            return NotFound();
+        }
+
+
+        [HttpGet("export/csv")]
+        public async Task<ActionResult> ExportCsv()
+        {
+            var list = await _invoiceService.GetAllInvoicesAsync();
+
+            var memory = new MemoryStream();
+            var writer = new StreamWriter(memory);
+            var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            csvWriter.WriteRecords(list);
+            writer.Flush();
+
+            memory.Position = 0;
+            if (memory != Stream.Null)
+                return File(memory, "text/csv", $"Export_{DateTime.Now}.csv");
+
+            return NotFound();
+        }
+
+
+        [HttpPost("import/json")]
+        public async Task<ActionResult> ImportJson(IFormFile importFile)
+        {
+            IList<AddInvoiceResource> invoices = null;
+            if (importFile != null)
+            {
+                using (var stream = importFile.OpenReadStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    var serializer = new JsonSerializer();
+                    invoices =
+                        (List<AddInvoiceResource>)serializer.Deserialize(reader, typeof(List<AddInvoiceResource>));
+                }
+
+                foreach (var inv in invoices)
+                    await _invoiceService.CreateInvoice(inv);
+            }
+
+            return Ok(invoices);
+        }
+
+
+        [HttpPost("import/csv")]
+        public async Task<ActionResult> ImportCsv(IFormFile importFile)
+        {
+            var invoices = new List<AddInvoiceResource>();
+            if (importFile != null)
+            {
+                using (var stream = importFile.OpenReadStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    var serializer = new CsvReader(reader, CultureInfo.InvariantCulture);
+                    invoices = serializer.GetRecords<AddInvoiceResource>().ToList<AddInvoiceResource>();
+                }
+
+                foreach (var inv in invoices)
+                    await _invoiceService.CreateInvoice(inv);
+            }
+            else
+            {
+                ModelState.AddModelError("", "Empty file");
+            }
+
+            return Ok(invoices);
+        }
+
+        [HttpPost("import/xml")]
+        public async Task<ActionResult> ImportXml(IFormFile importFile)
+        {
+            var invoices = new List<AddInvoiceResource>();
+            if (importFile != null)
+            {
+                using (var stream = importFile.OpenReadStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    var serializer = new XmlSerializer(typeof(List<AddInvoiceResource>));
+                    invoices = (List<AddInvoiceResource>)serializer.Deserialize(reader);
+                }
+
+                foreach (var inv in invoices)
+                    await _invoiceService.CreateInvoice(inv);
+            }
+            else
+            {
+                ModelState.AddModelError("", "Empty file");
+            }
+
+            return Ok(invoices);
         }
     }
 }
