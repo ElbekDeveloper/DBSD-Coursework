@@ -14,7 +14,7 @@ namespace ApplicationCore.Resources
             CreateMap<Warehouse,WarehouseResource>().ReverseMap();
             CreateMap<CounterAgent, CounterAgentResource>().ReverseMap();
             CreateMap<StaffMember, StaffMemberResource>().ReverseMap();
-            CreateMap<InvoiceProduct, GetInvoiceProductResource>();
+            CreateMap<InvoiceProduct, GetInvoiceProductResource>().ReverseMap();
             CreateMap<Invoice, GetInvoiceResource>();
             CreateMap<Product, AddProductResource>()
                         .ForMember(p => p.ManufacturerId, opt => opt.MapFrom(pr => pr.Manufacturer.ManufacturerId))
