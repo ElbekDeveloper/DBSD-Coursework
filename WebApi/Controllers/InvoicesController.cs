@@ -28,5 +28,14 @@ namespace WebApi.Controllers
         {
             return Ok(await _invoiceService.GetAllInvoicesAsync(cancellationToken));
         }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Individual Invoice", Type = typeof(GetInvoiceResource))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult<GetInvoiceResource>> GetInvoiceById([FromRoute] int id, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _invoiceService.GetInvoiceByIdAsync(id, cancellationToken));
+        }
     }
 }
