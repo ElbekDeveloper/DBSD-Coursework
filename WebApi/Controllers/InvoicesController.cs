@@ -84,9 +84,9 @@ namespace WebApi.Controllers
         // Import and Export endpoints
 
         [HttpGet("export/json")]
-        public async Task<ActionResult> ExportJson()
+        public async Task<ActionResult> ExportJson([FromQuery]InvoiceFilter invoiceFilter, CancellationToken cancellationToken)
         {
-            var list = await _invoiceService.GetAllInvoicesAsync();
+            var list = await _invoiceService.GetAllInvoicesWithFiltersAsync(invoiceFilter, cancellationToken);
 
 
             var memory = new MemoryStream();
@@ -103,11 +103,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("export/xml")]
-
-        public async Task<ActionResult> ExportXml()
+        public async Task<ActionResult> ExportXml(InvoiceFilter invoiceFilter, CancellationToken cancellationToken)
         {
-            var list = await _invoiceService.GetAllInvoicesAsync();
-            
+            var list = await _invoiceService.GetAllInvoicesWithFiltersAsync(invoiceFilter, cancellationToken);
             var memory = new MemoryStream();
             var writer = new StreamWriter(memory);
             var serializer = new XmlSerializer(typeof(List<GetInvoiceResource>));
@@ -123,9 +121,9 @@ namespace WebApi.Controllers
 
 
         [HttpGet("export/csv")]
-        public async Task<ActionResult> ExportCsv()
+        public async Task<ActionResult> ExportCsv([FromQuery]InvoiceFilter invoiceFilter, CancellationToken cancellationToken)
         {
-            var list = await _invoiceService.GetAllInvoicesAsync();
+            var list = await _invoiceService.GetAllInvoicesWithFiltersAsync(invoiceFilter, cancellationToken);
 
             var memory = new MemoryStream();
             var writer = new StreamWriter(memory);
