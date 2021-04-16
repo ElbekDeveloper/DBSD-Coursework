@@ -87,6 +87,8 @@
     <Build Include="dbo\Stored Procedures\spWarehouse_GetAll.sql" />
     <Build Include="dbo\Stored Procedures\spInvoice_GetById.sql" />
     <Build Include="dbo\Stored Procedures\spInvoice_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\spInvoice_GetById_WithCalculations.sql" />
+    <Build Include="dbo\Stored Procedures\spInvoice_Delete.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\SqlProject.publish.xml" />

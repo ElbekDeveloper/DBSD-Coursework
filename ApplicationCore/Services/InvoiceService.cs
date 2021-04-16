@@ -21,6 +21,11 @@ namespace ApplicationCore.Services
             _mapper = mapper;
         }
 
+        public async Task<int> DeleteInvoiceAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _invoiceRepository.DeleteAsync(id, cancellationToken);
+        }
+
         public async Task<List<GetInvoiceResource>> GetAllInvoicesAsync(CancellationToken cancellationToken = default)
         {
             var invoices = await _invoiceRepository.GetAllAsync(cancellationToken);

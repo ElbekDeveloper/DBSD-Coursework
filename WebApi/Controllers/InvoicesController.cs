@@ -37,5 +37,15 @@ namespace WebApi.Controllers
         {
             return Ok(await _invoiceService.GetInvoiceByIdAsync(id, cancellationToken));
         }
+
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Invoice Deleted", Type = typeof(int))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> DeleteInvoice([FromRoute] int id, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _invoiceService.DeleteInvoiceAsync(id, cancellationToken));
+        }
     }
 }
